@@ -1,0 +1,7 @@
+.image-popup__container {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  box-sizing: border-box;
+  font-size: 0;
+}

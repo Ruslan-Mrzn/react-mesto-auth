@@ -1,0 +1,10 @@
+.page__photo-gallery {
+  margin: 0;
+  padding: 36px 0 0 0;
+}
+
+@media screen and (min-width: 768px) {
+  .page__photo-gallery {
+    padding-top: 50px;
+  }
+}
