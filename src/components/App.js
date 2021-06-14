@@ -37,7 +37,6 @@ function App() {
   }
 
   return (
-    <div className="root" id="root">
       <body className="page">
         <div className="page__container">
           <Header />
@@ -74,7 +73,6 @@ function App() {
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
       </body>
-    </div>
   );
 }
 
