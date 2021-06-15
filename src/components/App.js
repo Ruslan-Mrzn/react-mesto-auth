@@ -11,7 +11,7 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(false)
+  const [selectedCard, setSelectedCard] = React.useState({})
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -33,46 +33,45 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false)
     setIsAddPlacePopupOpen(false);
-    setSelectedCard(false);
+    setSelectedCard({});
   }
 
   return (
-      <body className="page">
-        <div className="page__container">
-          <Header />
+    <>
+      <div className="page">
+        <Header />
 
-          <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
+        <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
 
-          <Footer />
-        </div>
+        <Footer />
+      </div>
 
-        <PopupWithForm popupName={'edit'} formName={'profile-edit'} formTitle={'Редактировать профиль'} submitButtonValue={'Сохранить'} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
-          <input type="text" className="form__text-input" value="" name="name" placeholder="Имя" required minlength="2" maxlength="40" />
-          <span className="form__error name-error"></span>
-          <input type="text" className="form__text-input" value="" name="about" placeholder="Расскажите о себе" required minlength="2" maxlength="200" />
-          <span className="form__error about-error"></span>
-        </PopupWithForm>
+      <PopupWithForm popupName={'edit'} formName={'profile-edit'} formTitle={'Редактировать профиль'} submitButtonValue={'Сохранить'} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
+        <input type="text" className="form__text-input"  name="name" placeholder="Имя" required minLength="2" maxLength="40" />
+        <span className="form__error name-error"></span>
+        <input type="text" className="form__text-input"  name="about" placeholder="Расскажите о себе" required minLength="2" maxLength="200" />
+        <span className="form__error about-error"></span>
+      </PopupWithForm>
 
-        <PopupWithForm popupName={'add'} formName={'photo-add'} formTitle={'Новое место'} submitButtonValue={'Создать'} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
-          <input type="text" className="form__text-input" value="" name="title" placeholder="Название" required minlength="2" maxlength="30" />
-          <span className="form__error title-error"></span>
-          <input type="url" className="form__text-input" value="" name="url" placeholder="Ссылка на картинку" required />
-          <span className="form__error url-error"></span>
-        </PopupWithForm>
+      <PopupWithForm popupName={'add'} formName={'photo-add'} formTitle={'Новое место'} submitButtonValue={'Создать'} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
+        <input type="text" className="form__text-input"  name="title" placeholder="Название" required minLength="2" maxLength="30" />
+        <span className="form__error title-error"></span>
+        <input type="url" className="form__text-input"  name="url" placeholder="Ссылка на картинку" required />
+        <span className="form__error url-error"></span>
+      </PopupWithForm>
 
-        <PopupWithForm popupName={'avatar'} formName={'avatar-edit'} formTitle={'Обновить аватар'} submitButtonValue={'Сохранить'} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
-          <input type="url" className="form__text-input" value="" name="avatar" placeholder="Ссылка на аватарку" required />
-          <span className="form__error avatar-error"></span>
-        </PopupWithForm>
+      <PopupWithForm popupName={'avatar'} formName={'avatar-edit'} formTitle={'Обновить аватар'} submitButtonValue={'Сохранить'} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
+        <input type="url" className="form__text-input"  name="avatar" placeholder="Ссылка на аватарку" required />
+        <span className="form__error avatar-error"></span>
+      </PopupWithForm>
 
-        <PopupWithForm popupName={'submit'} formName={'act-submit'} formTitle={'Вы уверены?'} submitButtonValue={'Да'} onClose={closeAllPopups}>
-          <input type="url" className="form__text-input" value="" name="avatar" placeholder="Ссылка на аватарку" required />
-          <span className="form__error avatar-error"></span>
-        </PopupWithForm>
+      <PopupWithForm popupName={'submit'} formName={'act-submit'} formTitle={'Вы уверены?'} submitButtonValue={'Да'} onClose={closeAllPopups}>
+        <input type="url" className="form__text-input"  name="avatar" placeholder="Ссылка на аватарку" required />
+        <span className="form__error avatar-error"></span>
+      </PopupWithForm>
 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-
-      </body>
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+    </>
   );
 }
 

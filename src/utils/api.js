@@ -19,7 +19,7 @@ class Api {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers
     })
-      .then(this._checkResponse)
+    .then(this._checkResponse)
   }
 
   // получение массива начальных карточек с сервера
@@ -91,6 +91,7 @@ class Api {
       body: JSON.stringify({
         avatar: `${avatarUrl}`,
       })
+      .then(this._checkResponse)
     })
   }
 }

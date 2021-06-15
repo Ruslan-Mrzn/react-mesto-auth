@@ -3,10 +3,10 @@ function Card({card, onCardClick}) {
     onCardClick(card);
   }
   return (
-    <li key={card._id} className="photo-gallery__item">
+    <li className="photo-gallery__item">
       <article className="photo-card">
         <div className="photo-card__img-container">
-          <img src={card.link} alt="картинка" className="photo-card__img" onClick={handleClick} />
+          <img src={card.link} alt={card.name} className="photo-card__img" onClick={handleClick} />
         </div>
         <div className="photo-card__text-container">
           <h2 className="photo-card__title">{card.name}</h2>

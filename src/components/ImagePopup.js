@@ -1,6 +1,6 @@
 function ImagePopup({card, onClose}) {
   return (
-    <article className={`page__popup popup popup_type_image popup_bg-opacity_high ${card ? 'popup_opened' : ''}`}>
+    <article className={`page__popup popup popup_type_image popup_bg-opacity_high ${card.name ? 'popup_opened' : ''}`}>
       <div className="image-popup">
         <figure className="image-popup__container">
           <img className="image-popup__photo" src={card.link} alt="картинка" />
