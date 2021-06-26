@@ -1,10 +1,19 @@
 import React from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card({card, onCardClick}) {
+function Card({card, onCardClick, onCardLike, onCardDelete}) {
   const handleClick = () => {
     onCardClick(card);
   }
+
+  const handleLikeClick = () => {
+    onCardLike(card);
+  }
+
+  const handleCardDelete = () => {
+    onCardDelete(card);
+  }
+
   const currentUser = React.useContext(CurrentUserContext);
   const isOwn = card.owner._id === currentUser._id;
   const cardDeleteButtonClassName = (
@@ -25,12 +34,12 @@ function Card({card, onCardClick}) {
         <div className="photo-card__text-container">
           <h2 className="photo-card__title">{card.name}</h2>
           <div className="photo-card__likes-container">
-            <button type="button" className={cardLikeButtonClassName} aria-label="лайкнуть фото"></button>
+            <button type="button" className={cardLikeButtonClassName} aria-label="лайкнуть фото" onClick={handleLikeClick}></button>
             <span className="photo-card__likes-counter">{card.likes.length}</span>
           </div>
         </div>
       </article>
-      <button type="button" className={cardDeleteButtonClassName} aria-label="удалить фото"></button>
+      <button type="button" className={cardDeleteButtonClassName} aria-label="удалить фото" onClick={handleCardDelete}></button>
     </li>
   );
 }
