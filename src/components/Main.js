@@ -1,22 +1,16 @@
 import React from "react";
 import {api} from '../utils/api';
 import Card from "./Card";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
 
-  const [userName, setUserName] = React.useState('')
-  const [userDescription, setUserDescription] = React.useState('')
-  const [userAvatar, setUserAvatar] = React.useState('')
+  const currentUser = React.useContext(CurrentUserContext);
   const [cards, setCards] = React.useState([])
 
-
   React.useEffect(() => {
-    // выполнение запросов получения информации о пользователе и начальных карточек
-    Promise.all([api.getUserInfo(), api.getInitialCards()]) // ждем выполнения обоих запросов (порядок важен!)
-    .then(([user, initialCards]) => {
-      setUserName(user.name);
-      setUserDescription(user.about);
-      setUserAvatar(user.avatar);
+    api.getInitialCards()
+      .then((initialCards) => {
       setCards(initialCards);
     })
     .catch((err) => console.error(err))
@@ -26,14 +20,14 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
     <main className="page__content content">
       <section className="page__profile profile">
         <div className="profile__avatar" onClick={onEditAvatar}>
-          <img src={userAvatar} alt="Аватар пользователя" className="profile__img" />
+          <img src={currentUser.avatar} alt="Аватар пользователя" className="profile__img" />
         </div>
         <div className="profile__info">
           <div className="profile__edit">
-            <h1 className="profile__name">{userName}</h1>
+            <h1 className="profile__name">{currentUser.name}</h1>
             <button className="profile__edit-button" onClick={onEditProfile} type="button" value="редактировать профиль"></button>
           </div>
-          <p className="profile__description">{userDescription}</p>
+          <p className="profile__description">{currentUser.about}</p>
         </div>
         <button className="profile__add-button" onClick={onAddPlace} type="button" value="добавить фотографию"></button>
       </section>
