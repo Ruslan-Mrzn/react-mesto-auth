@@ -3,6 +3,7 @@ import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
+import EditProfilePopup from "./EditProfilePopup";
 import ImagePopup from "./ImagePopup";
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
@@ -40,14 +41,21 @@ function App() {
     setSelectedCard(card);
   }
 
+  const handleUpdateUser = (userData) => {
+    api.saveProfileData(userData)
+      .then((newUserData) => {
+        setCurrentUser(newUserData);
+        closeAllPopups();
+      })
+      .catch(err => console.log(`Ошибка при обновлении данных профиля: ${err}`))
+  }
+
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
-    setIsEditProfilePopupOpen(false)
+    setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard({});
   }
-
-
 
   return (
     <>
@@ -61,12 +69,15 @@ function App() {
           <Footer />
         </div>
 
-        <PopupWithForm popupName={'edit'} formName={'profile-edit'} formTitle={'Редактировать профиль'} submitButtonValue={'Сохранить'} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
+        <EditProfilePopup popupName={'edit'} formName={'profile-edit'} onUpdateUser={handleUpdateUser} formTitle={'Редактировать профиль'} submitButtonValue={'Сохранить'} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
+
+
+        {/* <PopupWithForm popupName={'edit'} formName={'profile-edit'} formTitle={'Редактировать профиль'} submitButtonValue={'Сохранить'} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
           <input type="text" className="form__text-input"  name="name" placeholder="Имя" required minLength="2" maxLength="40" />
           <span className="form__error name-error"></span>
           <input type="text" className="form__text-input"  name="about" placeholder="Расскажите о себе" required minLength="2" maxLength="200" />
           <span className="form__error about-error"></span>
-        </PopupWithForm>
+        </PopupWithForm> */}
 
         <PopupWithForm popupName={'add'} formName={'photo-add'} formTitle={'Новое место'} submitButtonValue={'Создать'} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
           <input type="text" className="form__text-input"  name="title" placeholder="Название" required minLength="2" maxLength="30" />
