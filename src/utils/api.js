@@ -49,8 +49,8 @@ class Api {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
-        name: `${cardData.title}`,
-        link: `${cardData.url}`,
+        name: `${cardData.name}`,
+        link: `${cardData.link}`,
       })
     })
     .then(this._checkResponse)
@@ -81,24 +81,6 @@ class Api {
         .then(this._checkResponse)
     }
   }
-
-  // // постановка лайка
-  // likeCard(cardID) {
-  //   return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
-  //     method: 'PUT',
-  //     headers: this._headers,
-  //   })
-  //     .then(this._checkResponse)
-  // }
-
-  // // снятие лайка
-  // unlikeCard(cardID) {
-  //   return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
-  //     method: 'DELETE',
-  //     headers: this._headers,
-  //   })
-  //     .then(this._checkResponse)
-  // }
 
   // изменить аватар пользователя
   changeAvatar(avatarUrl) {
