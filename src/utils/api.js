@@ -65,23 +65,40 @@ class Api {
       .then(this._checkResponse)
   }
 
-  // постановка лайка
-  likeCard(cardID) {
-    return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
-      method: 'PUT',
-      headers: this._headers,
-    })
-    .then(this._checkResponse)
+  // переключение лайка
+  changeLikeCardStatus(cardID, isLiked) {
+    if(!isLiked) {
+      return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
+        method: 'PUT',
+        headers: this._headers,
+      })
+        .then(this._checkResponse)
+    } else {
+      return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
+        method: 'DELETE',
+        headers: this._headers,
+      })
+        .then(this._checkResponse)
+    }
   }
 
-  // снятие лайка
-  unlikeCard(cardID) {
-    return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
-      method: 'DELETE',
-      headers: this._headers,
-    })
-    .then(this._checkResponse)
-  }
+  // // постановка лайка
+  // likeCard(cardID) {
+  //   return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
+  //     method: 'PUT',
+  //     headers: this._headers,
+  //   })
+  //     .then(this._checkResponse)
+  // }
+
+  // // снятие лайка
+  // unlikeCard(cardID) {
+  //   return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
+  //     method: 'DELETE',
+  //     headers: this._headers,
+  //   })
+  //     .then(this._checkResponse)
+  // }
 
   // изменить аватар пользователя
   changeAvatar(avatarUrl) {
@@ -92,7 +109,7 @@ class Api {
         avatar: `${avatarUrl}`,
       })
     })
-    .then(this._checkResponse)
+      .then(this._checkResponse)
   }
 }
 

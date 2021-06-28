@@ -4,6 +4,7 @@ import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 import ImagePopup from "./ImagePopup";
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
@@ -50,6 +51,14 @@ function App() {
       .catch(err => console.log(`Ошибка при обновлении данных профиля: ${err}`))
   }
 
+  const handleUpdateAvatar = (avatarUrl) => {
+    api.changeAvatar(avatarUrl.avatar)
+      .then((newUserAvatarUrl) => {
+        setCurrentUser(newUserAvatarUrl);
+        closeAllPopups();
+      })
+  }
+
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -79,6 +88,8 @@ function App() {
           <span className="form__error about-error"></span>
         </PopupWithForm> */}
 
+        <EditAvatarPopup popupName={'avatar'} formName={'avatar-edit'} onUpdateAvatar={handleUpdateAvatar} formTitle={'Обновить аватар'} submitButtonValue={'Сохранить'} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}/>
+
         <PopupWithForm popupName={'add'} formName={'photo-add'} formTitle={'Новое место'} submitButtonValue={'Создать'} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
           <input type="text" className="form__text-input"  name="title" placeholder="Название" required minLength="2" maxLength="30" />
           <span className="form__error title-error"></span>
@@ -86,10 +97,10 @@ function App() {
           <span className="form__error url-error"></span>
         </PopupWithForm>
 
-        <PopupWithForm popupName={'avatar'} formName={'avatar-edit'} formTitle={'Обновить аватар'} submitButtonValue={'Сохранить'} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
+        {/* <PopupWithForm popupName={'avatar'} formName={'avatar-edit'} formTitle={'Обновить аватар'} submitButtonValue={'Сохранить'} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
           <input type="url" className="form__text-input"  name="avatar" placeholder="Ссылка на аватарку" required />
           <span className="form__error avatar-error"></span>
-        </PopupWithForm>
+        </PopupWithForm> */}
 
         <PopupWithForm popupName={'submit'} formName={'act-submit'} formTitle={'Вы уверены?'} submitButtonValue={'Да'} onClose={closeAllPopups}>
           <input type="url" className="form__text-input"  name="avatar" placeholder="Ссылка на аватарку" required />
