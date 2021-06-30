@@ -7,7 +7,7 @@ function SubmitPopup ({popupName, formName, formTitle, submitButtonValue, isOpen
     onSubmit(card);
   }
   return (
-    <PopupWithForm popupName={popupName} formName={formName} formTitle={formTitle} submitButtonValue={submitButtonValue} isOpen={isOpen} onSubmit={handleSubmit} onClose={onClose}/>
+    <PopupWithForm formIsValid={true} popupName={popupName} formName={formName} formTitle={formTitle} submitButtonValue={submitButtonValue} isOpen={isOpen} onSubmit={handleSubmit} onClose={onClose}/>
   )
 }
 

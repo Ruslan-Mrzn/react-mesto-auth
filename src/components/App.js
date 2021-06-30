@@ -86,14 +86,13 @@ function App() {
   const handleUpdateAvatar = (avatarUrl) => {
     api.changeAvatar(avatarUrl.avatar)
       .then((newUserAvatarUrl) => {
-        setCurrentUser([newUserAvatarUrl]);
+        setCurrentUser(newUserAvatarUrl);
         closeAllPopups();
       })
       .catch((err) => console.error(err));
   }
 
   const handleAddPlace = (photoData) => {
-    console.log(photoData);
     api.addNewCard(photoData)
       .then((newCard) => {
         setCards([newCard, ...cards]);
