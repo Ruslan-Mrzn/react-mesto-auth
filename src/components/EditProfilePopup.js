@@ -2,7 +2,7 @@ import React from 'react';
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function EditProfilePopup({popupName, formName, onUpdateUser, formTitle, submitButtonValue, isOpen, onClose}) {
+function EditProfilePopup({popupName, formName, onUpdateUser, formTitle, submitButtonValue, isOpen, onClose, isLoadingApiRequest}) {
 
   const currentUser = React.useContext(CurrentUserContext);
 
@@ -46,7 +46,7 @@ function EditProfilePopup({popupName, formName, onUpdateUser, formTitle, submitB
 
 
   return (
-    <PopupWithForm popupName={popupName} formName={formName} formTitle={formTitle} formIsValid={formIsValid} submitButtonValue={submitButtonValue} isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
+    <PopupWithForm loadingApiRequestText={"Сохраняю ..."} isLoadingApiRequest={isLoadingApiRequest} popupName={popupName} formName={formName} formTitle={formTitle} formIsValid={formIsValid} submitButtonValue={submitButtonValue} isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
       <input type="text" onInput={handleNameInputChange} className={`form__text-input ${nameIsValid ? '' : 'form__text-input_type_error'}`} defaultValue={name} onChange={handleNameInputChange} name="name" placeholder="Имя" required minLength="2" maxLength="40" />
       <span className={`form__error name-error ${nameIsValid ? '' : 'form__error_visible'} `}>{nameError}</span>
       <input type="text" onInput={handleDescriptionInputChange} className={`form__text-input ${descriptionIsValid ? '' : 'form__text-input_type_error'}`} defaultValue={description} onChange={handleDescriptionInputChange} name="description" placeholder="Расскажите о себе" required minLength="2" maxLength="200" />

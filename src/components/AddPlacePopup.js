@@ -1,7 +1,7 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm';
 
-function AddPlacePopup({popupName, formName, onAddPlace, formTitle, submitButtonValue, isOpen, onClose}) {
+function AddPlacePopup({popupName, formName, onAddPlace, formTitle, submitButtonValue, isOpen, onClose, isLoadingApiRequest}) {
 
   const [titleRefIsValid, setTitleRefIsValid] = React.useState(true);
   const [urlRefIsValid, setUrlRefIsValid] = React.useState(true);
@@ -48,7 +48,7 @@ function AddPlacePopup({popupName, formName, onAddPlace, formTitle, submitButton
   }, [titleRefIsValid, urlRefIsValid, isOpen]);
 
   return (
-    <PopupWithForm popupName={popupName} formName={formName} formIsValid={formIsValid}  formTitle={formTitle} submitButtonValue={submitButtonValue} isOpen={isOpen} onClose={handleCloseButton} onSubmit={handleSubmit}>
+    <PopupWithForm loadingApiRequestText={"Сохраняю ..."} isLoadingApiRequest={isLoadingApiRequest} popupName={popupName} formName={formName} formIsValid={formIsValid}  formTitle={formTitle} submitButtonValue={submitButtonValue} isOpen={isOpen} onClose={handleCloseButton} onSubmit={handleSubmit}>
       <input ref={titleRef} autoComplete="off" type="text" onPaste={checkTitleRefValidity} onChange={checkTitleRefValidity} className={`form__text-input ${titleRefIsValid ? '' : 'form__text-input_type_error'}`} name="title" placeholder="Название" required minLength="2" maxLength="30" />
       <span className={`form__error ${titleRefIsValid ? '' : 'form__error_visible'}`}>{titleRefError}</span>
       <input ref={urlRef} autoComplete="off" type="url" onPaste={checkUrlRefValidity} onChange={checkUrlRefValidity} className={`form__text-input ${urlRefIsValid ? '' : 'form__text-input_type_error'}`} name="url" placeholder="Ссылка на картинку" required />

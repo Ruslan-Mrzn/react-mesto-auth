@@ -21,6 +21,7 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [cardToDelete, setCardToDelete] = React.useState({});
+  const [isLoadingApiRequest, setIsLoadingApiRequest] = React.useState(false);
 
   React.useEffect(() => {
     // выполнение запросов получения информации о пользователе и начальных карточек
@@ -66,39 +67,55 @@ function App() {
   }
 
   const handleSubmitCardDelete = (card) => {
+    setIsLoadingApiRequest(true);
     api.deleteCard(card._id)
       .then(() => {
         setCards((state) => state.filter((c) => c._id !== card._id));
         closeAllPopups();
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setIsLoadingApiRequest(false);
+      })
   }
 
   const handleUpdateUser = (userData) => {
+    setIsLoadingApiRequest(true);
     api.saveProfileData(userData)
       .then((newUserData) => {
         setCurrentUser(newUserData);
         closeAllPopups();
       })
       .catch(err => console.log(`Ошибка при обновлении данных профиля: ${err}`))
+      .finally(() => {
+        setIsLoadingApiRequest(false);
+      })
   }
 
   const handleUpdateAvatar = (avatarUrl) => {
+    setIsLoadingApiRequest(true);
     api.changeAvatar(avatarUrl.avatar)
       .then((newUserAvatarUrl) => {
         setCurrentUser(newUserAvatarUrl);
         closeAllPopups();
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setIsLoadingApiRequest(false);
+      })
   }
 
   const handleAddPlace = (photoData) => {
+    setIsLoadingApiRequest(true);
     api.addNewCard(photoData)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setIsLoadingApiRequest(false);
+      })
   }
 
   const closeAllPopups = () => {
@@ -121,13 +138,13 @@ function App() {
           <Footer />
         </div>
 
-        <EditProfilePopup popupName={'edit'} formName={'profile-edit'} onUpdateUser={handleUpdateUser} formTitle={'Редактировать профиль'} submitButtonValue={'Сохранить'} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
+        <EditProfilePopup isLoadingApiRequest={isLoadingApiRequest} popupName={'edit'} formName={'profile-edit'} onUpdateUser={handleUpdateUser} formTitle={'Редактировать профиль'} submitButtonValue={'Сохранить'} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
 
-        <EditAvatarPopup popupName={'avatar'} formName={'avatar-edit'} onUpdateAvatar={handleUpdateAvatar} formTitle={'Обновить аватар'} submitButtonValue={'Сохранить'} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}/>
+        <EditAvatarPopup isLoadingApiRequest={isLoadingApiRequest} popupName={'avatar'} formName={'avatar-edit'} onUpdateAvatar={handleUpdateAvatar} formTitle={'Обновить аватар'} submitButtonValue={'Сохранить'} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}/>
 
-        <AddPlacePopup popupName={'add'} formName={'photo-add'} onAddPlace={handleAddPlace} formTitle={'Новое место'} submitButtonValue={'Создать'} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}/>
+        <AddPlacePopup isLoadingApiRequest={isLoadingApiRequest} popupName={'add'} formName={'photo-add'} onAddPlace={handleAddPlace} formTitle={'Новое место'} submitButtonValue={'Создать'} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}/>
 
-        <SubmitPopup popupName={'submit'} card={cardToDelete} formName={'act-submit'} onSubmit={handleSubmitCardDelete} formTitle={'Вы уверены?'} submitButtonValue={'Да'} isOpen={isSubmitPopupOpen} onClose={closeAllPopups}/>
+        <SubmitPopup isLoadingApiRequest={isLoadingApiRequest} popupName={'submit'} card={cardToDelete} formName={'act-submit'} onSubmit={handleSubmitCardDelete} formTitle={'Вы уверены?'} submitButtonValue={'Да'} isOpen={isSubmitPopupOpen} onClose={closeAllPopups}/>
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </CurrentUserContext.Provider>

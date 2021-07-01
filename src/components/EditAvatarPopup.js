@@ -2,7 +2,7 @@ import React from 'react';
 import PopupWithForm from './PopupWithForm';
 
 
-function EditAvatarPopup({popupName, formName, onUpdateAvatar, formTitle, submitButtonValue, isOpen, onClose}) {
+function EditAvatarPopup({popupName, formName, onUpdateAvatar, formTitle, submitButtonValue, isOpen, onClose, isLoadingApiRequest}) {
 
   const avatarRef = React.useRef();
   const [avatarRefIsValid, setAvatarRefIsValid] = React.useState(true);
@@ -35,7 +35,7 @@ function EditAvatarPopup({popupName, formName, onUpdateAvatar, formTitle, submit
 
 
   return (
-    <PopupWithForm popupName={popupName} formName={formName} formIsValid={formIsValid} formTitle={formTitle} submitButtonValue={submitButtonValue} isOpen={isOpen} onClose={handleCloseButton} onSubmit={handleSubmit}>
+    <PopupWithForm loadingApiRequestText={"Сохраняю ..."} isLoadingApiRequest={isLoadingApiRequest} popupName={popupName} formName={formName} formIsValid={formIsValid} formTitle={formTitle} submitButtonValue={submitButtonValue} isOpen={isOpen} onClose={handleCloseButton} onSubmit={handleSubmit}>
       <input ref={avatarRef} autoComplete="off" onPaste={checkAvatarRefValidity} onChange={checkAvatarRefValidity} type="url" className={`form__text-input ${avatarRefIsValid ? '' : 'form__text-input_type_error'}`} name="avatar" placeholder="Ссылка на аватарку" required />
       <span className={`form__error avatar-error ${avatarRefIsValid ? '' : 'form__error_visible'}`}>{avatarRefError}</span>
     </PopupWithForm>
