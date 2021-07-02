@@ -22,7 +22,6 @@ function AddPlacePopup({popupName, formName, onAddPlace, formTitle, submitButton
     setUrlRefError(urlRef.current.validationMessage);
   }
 
-
   const handleSubmit = (evt) => {
     evt.preventDefault();
 

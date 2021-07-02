@@ -1,7 +1,6 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm';
 
-
 function EditAvatarPopup({popupName, formName, onUpdateAvatar, formTitle, submitButtonValue, isOpen, onClose, isLoadingApiRequest}) {
 
   const avatarRef = React.useRef();
@@ -32,7 +31,6 @@ function EditAvatarPopup({popupName, formName, onUpdateAvatar, formTitle, submit
   React.useEffect(() => {
     setFormIsValid(avatarRefIsValid && avatarRef.current.value !== '');
   }, [avatarRefIsValid, isOpen]);
-
 
   return (
     <PopupWithForm loadingApiRequestText={"Сохраняю ..."} isLoadingApiRequest={isLoadingApiRequest} popupName={popupName} formName={formName} formIsValid={formIsValid} formTitle={formTitle} submitButtonValue={submitButtonValue} isOpen={isOpen} onClose={handleCloseButton} onSubmit={handleSubmit}>

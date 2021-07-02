@@ -10,7 +10,6 @@ import ImagePopup from "./ImagePopup";
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-
 function App() {
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -23,17 +22,15 @@ function App() {
   const [cardToDelete, setCardToDelete] = React.useState({});
   const [isLoadingApiRequest, setIsLoadingApiRequest] = React.useState(false);
 
+
   React.useEffect(() => {
-    // выполнение запросов получения информации о пользователе и начальных карточек
-    Promise.all([api.getUserInfo(), api.getInitialCards()]) // ждем выполнения обоих запросов (порядок важен!)
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
     .then(([user, initialCards]) => {
       setCurrentUser(user);
       setCards(initialCards);
     })
     .catch((err) => console.error(err))
   }, [])
-
-
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);

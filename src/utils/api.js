@@ -1,5 +1,3 @@
-// Для работы с API создайте класс Api.
-// Все запросы должны быть методами этого класса:
 class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
@@ -95,6 +93,7 @@ class Api {
   }
 }
 
+// экспортируем только экземпляр класса (по условию задачи)
 export const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-24',
   headers: {
