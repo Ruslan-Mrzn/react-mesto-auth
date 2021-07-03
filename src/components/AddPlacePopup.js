@@ -30,26 +30,22 @@ function AddPlacePopup({popupName, formName, onAddPlace, formTitle, submitButton
       name: photoTitle,
       link: photoUrl,
     })
-
-    setPhotoTitle('');
-    setPhotoUrl('');
   }
 
-  const handleCloseButton = () => {
-    onClose();
+  // При открытии попапа поля должны быть пустыми, ошибки валидации скрыты, кнопка сабмита недоступна
+  React.useEffect(() => {
+    setFormIsValid(photoTitleIsValid && photoUrlIsValid && photoTitle !== '' && photoUrl !== '');
+  }, [photoTitleIsValid, photoUrlIsValid, photoTitle, photoUrl]);
+
+  React.useEffect(() => {
     setPhotoTitle('');
     setPhotoUrl('');
     setPhotoTitleIsValid(true);
     setPhotoUrlIsValid(true);
-    setFormIsValid(false);
-  }
-
-  React.useEffect(() => {
-    setFormIsValid(photoTitleIsValid && photoUrlIsValid && photoTitle !== '' && photoUrl !== '');
-  }, [photoTitleIsValid, photoUrlIsValid, isOpen, photoTitle, photoUrl]);
+  }, [isOpen])
 
   return (
-    <PopupWithForm loadingApiRequestText={"Сохраняю ..."} isLoadingApiRequest={isLoadingApiRequest} popupName={popupName} formName={formName} formIsValid={formIsValid}  formTitle={formTitle} submitButtonValue={submitButtonValue} isOpen={isOpen} onClose={handleCloseButton} onSubmit={handleSubmit}>
+    <PopupWithForm loadingApiRequestText={"Сохраняю ..."} isLoadingApiRequest={isLoadingApiRequest} popupName={popupName} formName={formName} formIsValid={formIsValid}  formTitle={formTitle} submitButtonValue={submitButtonValue} isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
       <input autoComplete="off" type="text" onChange={handlePhohoTitleChange} value={photoTitle || ''} className={`form__text-input ${photoTitleIsValid ? '' : 'form__text-input_type_error'}`} name="title" placeholder="Название" required minLength="2" maxLength="30" />
       <span className={`form__error ${photoTitleIsValid ? '' : 'form__error_visible'}`}>{photoTitleError}</span>
       <input autoComplete="off" type="url" onChange={handlePhotoUrlChange} value={photoUrl || ''} className={`form__text-input ${photoUrlIsValid ? '' : 'form__text-input_type_error'}`} name="url" placeholder="Ссылка на картинку" required />
