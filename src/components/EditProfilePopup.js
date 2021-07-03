@@ -35,21 +35,27 @@ function EditProfilePopup({popupName, formName, onUpdateUser, formTitle, submitB
     })
   }
 
+  const handleCloseButton = () => {
+    onClose();
+    setNameIsValid(true);
+    setDescriptionIsValid(true);
+  }
+
   React.useEffect(() => {
     setFormIsValid(nameIsValid && descriptionIsValid && name !== '' && description !== '');
-  }, [nameIsValid, descriptionIsValid, isOpen, name, description]);
+  }, [nameIsValid, descriptionIsValid, isOpen, name, description, onClose]);
 
   React.useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
 
   return (
-    <PopupWithForm loadingApiRequestText={"Сохраняю ..."} isLoadingApiRequest={isLoadingApiRequest} popupName={popupName} formName={formName} formTitle={formTitle} formIsValid={formIsValid} submitButtonValue={submitButtonValue} isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
-      <input type="text" onInput={handleNameInputChange} className={`form__text-input ${nameIsValid ? '' : 'form__text-input_type_error'}`} defaultValue={name} onChange={handleNameInputChange} name="name" placeholder="Имя" required minLength="2" maxLength="40" />
+    <PopupWithForm loadingApiRequestText={"Сохраняю ..."} isLoadingApiRequest={isLoadingApiRequest} popupName={popupName} formName={formName} formTitle={formTitle} formIsValid={formIsValid} submitButtonValue={submitButtonValue} isOpen={isOpen} onClose={handleCloseButton} onSubmit={handleSubmit}>
+      <input type="text" className={`form__text-input ${nameIsValid ? '' : 'form__text-input_type_error'}`} value={name || ''} onChange={handleNameInputChange} name="name" placeholder="Имя" required minLength="2" maxLength="40" />
       <span className={`form__error name-error ${nameIsValid ? '' : 'form__error_visible'} `}>{nameError}</span>
-      <input type="text" onInput={handleDescriptionInputChange} className={`form__text-input ${descriptionIsValid ? '' : 'form__text-input_type_error'}`} defaultValue={description} onChange={handleDescriptionInputChange} name="description" placeholder="Расскажите о себе" required minLength="2" maxLength="200" />
+      <input type="text" className={`form__text-input ${descriptionIsValid ? '' : 'form__text-input_type_error'}`} value={description || ''} onChange={handleDescriptionInputChange} name="description" placeholder="Расскажите о себе" required minLength="2" maxLength="200" />
       <span className={`form__error about-error ${descriptionIsValid ? '' : 'form__error_visible'}`}>{descriptionError}</span>
     </PopupWithForm>
   )

@@ -3,55 +3,57 @@ import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup({popupName, formName, onAddPlace, formTitle, submitButtonValue, isOpen, onClose, isLoadingApiRequest}) {
 
-  const [titleRefIsValid, setTitleRefIsValid] = React.useState(true);
-  const [urlRefIsValid, setUrlRefIsValid] = React.useState(true);
-  const [titleRefError, setTitleRefError] = React.useState('');
-  const [urlRefError, setUrlRefError] = React.useState('');
+  const [photoTitle, setPhotoTitle] = React.useState('');
+  const [photoUrl, setPhotoUrl] = React.useState('');
+  const [photoTitleIsValid, setPhotoTitleIsValid] = React.useState(true);
+  const [photoUrlIsValid, setPhotoUrlIsValid] = React.useState(true);
+  const [photoTitleError, setPhotoTitleError] = React.useState('');
+  const [photoUrlError, setPhotoUrlError] = React.useState('');
   const [formIsValid, setFormIsValid] = React.useState(false);
 
-  const titleRef = React.useRef();
-  const urlRef = React.useRef();
-
-  const checkTitleRefValidity = () => {
-    setTitleRefIsValid(titleRef.current.validity.valid);
-    setTitleRefError(titleRef.current.validationMessage);
+  const handlePhohoTitleChange = (evt) => {
+    setPhotoTitle(evt.target.value)
+    setPhotoTitleIsValid(evt.target.validity.valid);
+    setPhotoTitleError(evt.target.validationMessage);
   }
 
-  const checkUrlRefValidity = () => {
-    setUrlRefIsValid(urlRef.current.validity.valid);
-    setUrlRefError(urlRef.current.validationMessage);
+  const handlePhotoUrlChange = (evt) => {
+    setPhotoUrl(evt.target.value)
+    setPhotoUrlIsValid(evt.target.validity.valid);
+    setPhotoUrlError(evt.target.validationMessage);
   }
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
     onAddPlace({
-      name: `${titleRef.current.value}`,
-      link: `${urlRef.current.value}`,
+      name: photoTitle,
+      link: photoUrl,
     })
 
-    titleRef.current.value = '';
-    urlRef.current.value = '';
+    setPhotoTitle('');
+    setPhotoUrl('');
   }
 
   const handleCloseButton = () => {
     onClose();
-    titleRef.current.value = '';
-    urlRef.current.value = '';
-    setTitleRefIsValid(titleRef.current.validity.valid || titleRef.current.value === '');
-    setUrlRefIsValid(urlRef.current.validity.valid || urlRef.current.value === '')
+    setPhotoTitle('');
+    setPhotoUrl('');
+    setPhotoTitleIsValid(true);
+    setPhotoUrlIsValid(true);
+    setFormIsValid(false);
   }
 
   React.useEffect(() => {
-    setFormIsValid(titleRefIsValid && urlRefIsValid && titleRef.current.value !== '' && urlRef.current.value !== '');
-  }, [titleRefIsValid, urlRefIsValid, isOpen]);
+    setFormIsValid(photoTitleIsValid && photoUrlIsValid && photoTitle !== '' && photoUrl !== '');
+  }, [photoTitleIsValid, photoUrlIsValid, isOpen, photoTitle, photoUrl]);
 
   return (
     <PopupWithForm loadingApiRequestText={"Сохраняю ..."} isLoadingApiRequest={isLoadingApiRequest} popupName={popupName} formName={formName} formIsValid={formIsValid}  formTitle={formTitle} submitButtonValue={submitButtonValue} isOpen={isOpen} onClose={handleCloseButton} onSubmit={handleSubmit}>
-      <input ref={titleRef} autoComplete="off" type="text" onPaste={checkTitleRefValidity} onChange={checkTitleRefValidity} className={`form__text-input ${titleRefIsValid ? '' : 'form__text-input_type_error'}`} name="title" placeholder="Название" required minLength="2" maxLength="30" />
-      <span className={`form__error ${titleRefIsValid ? '' : 'form__error_visible'}`}>{titleRefError}</span>
-      <input ref={urlRef} autoComplete="off" type="url" onPaste={checkUrlRefValidity} onChange={checkUrlRefValidity} className={`form__text-input ${urlRefIsValid ? '' : 'form__text-input_type_error'}`} name="url" placeholder="Ссылка на картинку" required />
-      <span className={`form__error ${urlRefIsValid ? '' : 'form__error_visible'}`}>{urlRefError}</span>
+      <input autoComplete="off" type="text" onChange={handlePhohoTitleChange} value={photoTitle || ''} className={`form__text-input ${photoTitleIsValid ? '' : 'form__text-input_type_error'}`} name="title" placeholder="Название" required minLength="2" maxLength="30" />
+      <span className={`form__error ${photoTitleIsValid ? '' : 'form__error_visible'}`}>{photoTitleError}</span>
+      <input autoComplete="off" type="url" onChange={handlePhotoUrlChange} value={photoUrl || ''} className={`form__text-input ${photoUrlIsValid ? '' : 'form__text-input_type_error'}`} name="url" placeholder="Ссылка на картинку" required />
+      <span className={`form__error ${photoUrlIsValid ? '' : 'form__error_visible'}`}>{photoUrlError}</span>
     </PopupWithForm>
   )
 }

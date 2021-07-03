@@ -3,14 +3,17 @@ import React from "react";
 function ImagePopup({card, onClose}) {
 
   const handleEscClose = React.useCallback( (evt) => {
+    console.log('esc')
     if (evt.key ==='Escape') {
-        onClose();
+      onClose();
     }
   }, [onClose])
 
   const handleOverlayClose = React.useCallback( (evt) => {
+
     if (evt.target.classList.contains('popup_opened')) {
-        onClose();
+      console.log('overlay')
+      onClose();
     }
   }, [onClose])
 
@@ -18,12 +21,12 @@ function ImagePopup({card, onClose}) {
     if (card.name) {
       window.addEventListener('keydown', handleEscClose);
       window.addEventListener('click', handleOverlayClose);
-    } else {
-      window.removeEventListener('keydown', handleEscClose);
     }
 
-    return () => window.removeEventListener('keydown', handleEscClose);
-
+    return () => {
+      window.removeEventListener('keydown', handleEscClose);
+      window.removeEventListener('click', handleOverlayClose);
+    }
   }, [card, handleEscClose, handleOverlayClose])
 
   return (

@@ -19,12 +19,12 @@ function PopupWithForm({popupName, formName, formTitle, submitButtonValue, child
     if (isOpen) {
       window.addEventListener('keydown', handleEscClose);
       window.addEventListener('click', handleOverlayClose);
-    } else {
-      window.removeEventListener('keydown', handleEscClose);
     }
 
-    return () => window.removeEventListener('keydown', handleEscClose);
-
+    return () => {
+      window.removeEventListener('keydown', handleEscClose);
+      window.removeEventListener('click', handleOverlayClose);
+    }
   }, [isOpen, handleEscClose, handleOverlayClose])
 
   return (
