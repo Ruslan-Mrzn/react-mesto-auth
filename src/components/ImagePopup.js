@@ -3,7 +3,6 @@ import React from "react";
 function ImagePopup({card, onClose}) {
 
   const handleEscClose = React.useCallback( (evt) => {
-    console.log('esc')
     if (evt.key ==='Escape') {
       onClose();
     }
@@ -12,7 +11,6 @@ function ImagePopup({card, onClose}) {
   const handleOverlayClose = React.useCallback( (evt) => {
 
     if (evt.target.classList.contains('popup_opened')) {
-      console.log('overlay')
       onClose();
     }
   }, [onClose])
