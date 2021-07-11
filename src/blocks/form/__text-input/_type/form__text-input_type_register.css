@@ -1,0 +1,14 @@
+.form__text-input_type_register {
+  margin: 0;
+  padding: 0 0 10px 0;
+
+  font-family: 'Inter', 'Arial', sans-serif;
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 400;
+  color: white;
+  background-color: transparent;
+
+  border: none;
+  border-bottom: 2px solid #CCCCCC;
+}

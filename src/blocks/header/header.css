@@ -3,6 +3,7 @@
   min-height: 83px;
   border-bottom: 1px solid rgba(84,84,84, .7);
   max-width: 880px;
+  display: flex;
 }
 
 @media screen and (min-width: 768px) {

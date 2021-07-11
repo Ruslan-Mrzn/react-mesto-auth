@@ -7,8 +7,12 @@ import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import SubmitPopup from "./SubmitPopup";
 import ImagePopup from "./ImagePopup";
+import Register from "./Register";
+import Login from "./Login";
+import InfoTooltip from "./InfoTooltip";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { Route, Switch} from 'react-router-dom';
 
 function App() {
 
@@ -128,11 +132,13 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
 
-          <Header />
+          {<Header /> && false}
 
-          <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete}/>
+          {<Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete}/>
+            && false
+          }
 
-          <Footer />
+          {<Footer /> && false}
         </div>
 
         <EditProfilePopup isLoadingApiRequest={isLoadingApiRequest} popupName={'edit'} formName={'profile-edit'} onUpdateUser={handleUpdateUser} formTitle={'Редактировать профиль'} submitButtonValue={'Сохранить'} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
@@ -144,6 +150,18 @@ function App() {
         <SubmitPopup isLoadingApiRequest={isLoadingApiRequest} popupName={'submit'} card={cardToDelete} formName={'act-submit'} onSubmit={handleSubmitCardDelete} formTitle={'Вы уверены?'} submitButtonValue={'Да'} isOpen={isSubmitPopupOpen} onClose={closeAllPopups}/>
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+
+        <Switch>
+          <Route path="/signup">
+            <Register />
+            <InfoTooltip />
+          </Route>
+
+          <Route path="/signin">
+            <Login />
+            <InfoTooltip />
+          </Route>
+        </Switch>
       </CurrentUserContext.Provider>
     </>
   );

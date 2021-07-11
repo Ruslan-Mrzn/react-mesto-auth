@@ -3,6 +3,7 @@
   padding: 25px 22px;
 
   min-height: 322px;
+  width: 358px;
   box-sizing: border-box;
 
   display: flex;
@@ -20,6 +21,30 @@
 
 .form[name=avatar-edit-form] {
   min-height: 272px;
+}
+
+.form[name=register-form] {
+  min-height: 476px;
+}
+
+.form[name=login-form] {
+  min-height: 430px;
+}
+
+.form[name=success-tooltip-form] {
+  width: 100%;
+  min-height: 330px;
+  background-image: url(../../images/rgister-success.svg);
+  background-repeat: no-repeat;
+  background-position: center 60px;
+}
+
+.form[name=fail-tooltip-form] {
+  width: 100%;
+  min-height: 330px;
+  background-image: url(../../images/login-fail.svg);
+  background-repeat: no-repeat;
+  background-position: center 60px;
 }
 
 
