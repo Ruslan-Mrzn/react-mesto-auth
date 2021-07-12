@@ -10,9 +10,10 @@ import ImagePopup from "./ImagePopup";
 import Register from "./Register";
 import Login from "./Login";
 import InfoTooltip from "./InfoTooltip";
+import ProtectedRoute from "./ProtectedRoute";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { Route, Switch} from 'react-router-dom';
+import { Route, Switch, Redirect} from 'react-router-dom';
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
   const [cards, setCards] = React.useState([]);
   const [cardToDelete, setCardToDelete] = React.useState({});
   const [isLoadingApiRequest, setIsLoadingApiRequest] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
 
   React.useEffect(() => {
@@ -130,16 +132,7 @@ function App() {
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
-        <div className="page">
 
-          {<Header /> && false}
-
-          {<Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete}/>
-            && false
-          }
-
-          {<Footer /> && false}
-        </div>
 
         <EditProfilePopup isLoadingApiRequest={isLoadingApiRequest} popupName={'edit'} formName={'profile-edit'} onUpdateUser={handleUpdateUser} formTitle={'Редактировать профиль'} submitButtonValue={'Сохранить'} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
 
@@ -161,6 +154,17 @@ function App() {
             <Login />
             <InfoTooltip />
           </Route>
+          <ProtectedRoute path={"/"} loggedIn={loggedIn}>
+            <div className="page">
+
+              <Header />
+
+              <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete}/>
+
+              <Footer />
+            </div>
+          </ProtectedRoute>
+
         </Switch>
       </CurrentUserContext.Provider>
     </>
