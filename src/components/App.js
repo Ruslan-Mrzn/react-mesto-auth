@@ -13,7 +13,7 @@ import InfoTooltip from "./InfoTooltip";
 import ProtectedRoute from "./ProtectedRoute";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { Route, Switch, Redirect} from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 function App() {
 
@@ -121,6 +121,10 @@ function App() {
       })
   }
 
+  const handleLogin = () => {
+    setLoggedIn(true);
+  }
+
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -151,7 +155,7 @@ function App() {
           </Route>
 
           <Route path="/signin">
-            <Login />
+            <Login handleLogin={handleLogin} />
             <InfoTooltip />
           </Route>
           <ProtectedRoute path={"/"} loggedIn={loggedIn}>
