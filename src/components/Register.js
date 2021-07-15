@@ -74,7 +74,7 @@ function Register() {
 
       <InfoTooltip isSuccessOpened={isSuccess} isFailOpened={isFail} onClose={closePopup} />
     </>
-  );
+  )
 }
 
 export default Register;

@@ -47,7 +47,7 @@ function InfoTooltip({isSuccessOpened, isFailOpened, onClose}) {
           <form className="form" name={`success-tooltip-form`}>
             <p className="form__info">Вы успешно зарегистрировались!</p>
           </form>
-          <button type="button" onClick={onClose} className="popup__close-button" value="закрыть форму" name="close-form" title="закрыть форму"></button>
+          <button type="button" onClick={onClose} className="popup__close-button" value="закрыть форму" name="close-form" title="закрыть"></button>
         </div>
       </article>
 
@@ -56,7 +56,7 @@ function InfoTooltip({isSuccessOpened, isFailOpened, onClose}) {
           <form className="form" name={`fail-tooltip-form`}>
             <p className="form__info">Что-то пошло не так! Попробуйте ещё раз.</p>
           </form>
-          <button type="button" onClick={onClose} className="popup__close-button" value="закрыть форму" name="close-form" title="закрыть форму"></button>
+          <button type="button" onClick={onClose} className="popup__close-button" value="закрыть форму" name="close-form" title="закрыть"></button>
         </div>
       </article>
     </>

@@ -16,11 +16,11 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick, cards, onCa
         <div className="profile__info">
           <div className="profile__edit">
             <h1 className="profile__name">{currentUser.name}</h1>
-            <button className="profile__edit-button" onClick={onEditProfile} type="button" value="редактировать профиль"></button>
+            <button className="profile__edit-button" onClick={onEditProfile} type="button" value="редактировать профиль" title="редактировать профиль"></button>
           </div>
           <p className="profile__description">{currentUser.about}</p>
         </div>
-        <button className="profile__add-button" onClick={onAddPlace} type="button" value="добавить фотографию"></button>
+        <button className="profile__add-button" onClick={onAddPlace} type="button" value="добавить фотографию" title="добавить фотографию"></button>
       </section>
 
       <section className="page__photo-gallery photo-gallery">

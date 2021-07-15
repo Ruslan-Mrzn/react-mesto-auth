@@ -9,11 +9,12 @@ import SubmitPopup from "./SubmitPopup";
 import ImagePopup from "./ImagePopup";
 import Register from "./Register";
 import Login from "./Login";
-import InfoTooltip from "./InfoTooltip";
 import ProtectedRoute from "./ProtectedRoute";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch} from 'react-router-dom';
+import * as auth from '../utils/auth';
+import { useHistory } from 'react-router';
 
 function App() {
 
@@ -26,17 +27,11 @@ function App() {
   const [cards, setCards] = React.useState([]);
   const [cardToDelete, setCardToDelete] = React.useState({});
   const [isLoadingApiRequest, setIsLoadingApiRequest] = React.useState(false);
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(localStorage.getItem('jwt') !== null);
+  const [userData, setUserData] = React.useState({});
 
 
-  React.useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-    .then(([user, initialCards]) => {
-      setCurrentUser(user);
-      setCards(initialCards);
-    })
-    .catch((err) => console.error(err))
-  }, [])
+  const history = useHistory();
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -125,6 +120,14 @@ function App() {
     setLoggedIn(true);
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem('jwt');
+    setLoggedIn(false);
+    history.push({
+      pathname: '/signin'
+    })
+  }
+
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -133,43 +136,65 @@ function App() {
     setSelectedCard({});
   }
 
+  React.useEffect(() => {
+    const tokenCheck = () => {
+      if (localStorage.getItem('jwt')) {
+        const jwt = localStorage.getItem('jwt');
+        auth.getContent(jwt)
+          .then((data) => {
+            if (data) {
+              setUserData({...data.data})
+              handleLogin();
+              history.push({
+                pathname: '/'
+              })
+            }
+          })
+      }
+    };
+    tokenCheck();
+  }, [history, loggedIn]);
+
+  React.useEffect(() => {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+    .then(([user, initialCards]) => {
+      setCurrentUser(user);
+      setCards(initialCards);
+    })
+    .catch((err) => console.error(err));
+  }, [])
+
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
+        <div className="page">
 
+          <EditProfilePopup isLoadingApiRequest={isLoadingApiRequest} popupName={'edit'} formName={'profile-edit'} onUpdateUser={handleUpdateUser} formTitle={'Редактировать профиль'} submitButtonValue={'Сохранить'} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
 
-        <EditProfilePopup isLoadingApiRequest={isLoadingApiRequest} popupName={'edit'} formName={'profile-edit'} onUpdateUser={handleUpdateUser} formTitle={'Редактировать профиль'} submitButtonValue={'Сохранить'} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
+          <EditAvatarPopup isLoadingApiRequest={isLoadingApiRequest} popupName={'avatar'} formName={'avatar-edit'} onUpdateAvatar={handleUpdateAvatar} formTitle={'Обновить аватар'} submitButtonValue={'Сохранить'} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}/>
 
-        <EditAvatarPopup isLoadingApiRequest={isLoadingApiRequest} popupName={'avatar'} formName={'avatar-edit'} onUpdateAvatar={handleUpdateAvatar} formTitle={'Обновить аватар'} submitButtonValue={'Сохранить'} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}/>
+          <AddPlacePopup isLoadingApiRequest={isLoadingApiRequest} popupName={'add'} formName={'photo-add'} onAddPlace={handleAddPlace} formTitle={'Новое место'} submitButtonValue={'Создать'} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}/>
 
-        <AddPlacePopup isLoadingApiRequest={isLoadingApiRequest} popupName={'add'} formName={'photo-add'} onAddPlace={handleAddPlace} formTitle={'Новое место'} submitButtonValue={'Создать'} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}/>
+          <SubmitPopup isLoadingApiRequest={isLoadingApiRequest} popupName={'submit'} card={cardToDelete} formName={'act-submit'} onSubmit={handleSubmitCardDelete} formTitle={'Вы уверены?'} submitButtonValue={'Да'} isOpen={isSubmitPopupOpen} onClose={closeAllPopups}/>
 
-        <SubmitPopup isLoadingApiRequest={isLoadingApiRequest} popupName={'submit'} card={cardToDelete} formName={'act-submit'} onSubmit={handleSubmitCardDelete} formTitle={'Вы уверены?'} submitButtonValue={'Да'} isOpen={isSubmitPopupOpen} onClose={closeAllPopups}/>
+          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          <Switch>
+            <Route path="/signup">
+              <Register isLoggedIn={loggedIn} />
+            </Route>
 
-        <Switch>
-          <Route path="/signup">
-            <Register />
-            <InfoTooltip />
-          </Route>
+            <Route path="/signin">
+              <Login handleLogin={handleLogin} />
+            </Route>
 
-          <Route path="/signin">
-            <Login handleLogin={handleLogin} />
-            <InfoTooltip />
-          </Route>
-          <ProtectedRoute path={"/"} loggedIn={loggedIn}>
-            <div className="page">
-
-              <Header />
-
+            <ProtectedRoute path={"/"} loggedIn={loggedIn}>
+              <Header email={userData.email} onLogout={handleLogout} />
               <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete}/>
-
               <Footer />
-            </div>
-          </ProtectedRoute>
-
-        </Switch>
+            </ProtectedRoute>
+          </Switch>
+        </div>
       </CurrentUserContext.Provider>
     </>
   );
