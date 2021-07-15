@@ -15,7 +15,6 @@ export const register = (password, email) => {
       return Promise.reject(`Ошибка: ${res.status}`);
     })
     .then((res) => {
-      console.log(res);
       return res;
     })
     .catch((err) => {

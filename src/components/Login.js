@@ -29,7 +29,6 @@ function Login({handleLogin}) {
 
     auth.authorize(password, email)
       .then((data) => {
-        console.log(data)
         if(data.token) {
           handleLogin();
           history.push({
