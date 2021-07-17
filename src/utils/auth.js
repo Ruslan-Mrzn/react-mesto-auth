@@ -1,5 +1,13 @@
 export const BASE_URL = 'https://auth.nomoreparties.co';
 
+// метод для проверки ответа (чтобы не дублировать код во всех запросах)
+const _checkResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 export const register = (password, email) => {
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
@@ -8,18 +16,11 @@ export const register = (password, email) => {
     },
     body: JSON.stringify({password, email})
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(_checkResponse)
     .then((res) => {
       return res;
     })
-    .catch((err) => {
-      console.error(err);
-    })
+    // блок catch лучше здесь не использовать, т.к. конец запроса в компоненте App.js
 }
 
 export const authorize = (password, email) => {
@@ -30,20 +31,12 @@ export const authorize = (password, email) => {
     },
     body: JSON.stringify({password, email})
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
+  .then(_checkResponse)
   .then((data) => {
     if(data.token) {
       localStorage.setItem('jwt', data.token);
       return data;
     }
-  })
-  .catch((err) => {
-    console.error(err);
   })
 }
 
@@ -55,11 +48,5 @@ export const getContent = (token) => {
       'Authorization': `Bearer ${token}`
     }
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .then(data => data)
+  .then(_checkResponse)
 }
