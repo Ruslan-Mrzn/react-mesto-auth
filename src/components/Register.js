@@ -1,28 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router';
-import InfoTooltip from './InfoTooltip';
-import * as auth from '../utils/auth';
-import logo from '../images/header__logo.svg'
-function Register() {
-
-  const history = useHistory();
+function Register({onRegister}) {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [isSuccess, setIsSuccess] = React.useState(false);
-  const [isFail, setIsFail] = React.useState(false);
-
-  const closePopup = () => {
-    if(isSuccess) {
-      setIsSuccess(false);
-      history.push({
-        pathname: '/signin'
-      })
-    } else if (isFail) {
-      setIsFail(false)
-    }
-  }
 
   const handleEmailChange = (evt) => {
     setEmail(evt.target.value)
@@ -35,26 +16,11 @@ function Register() {
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    auth.register(password, email)
-      .then((res) => {
-        if(res) {
-          setIsSuccess(true);
-
-        } else {
-          setIsFail(true)
-        }
-      })
+    onRegister(password, email)
   }
-
-
 
   return (
     <>
-      <header className="page__header header">
-        <img className="header__logo" src={logo} alt="логотип место" />
-        <Link to="signin" className="header__link">Войти</Link>
-      </header>
-
       <main className="page__content content">
         <section className="page__register register">
           <form className="form form_type_register" name={`register-form`} onSubmit={handleSubmit} noValidate={false}>
@@ -71,8 +37,6 @@ function Register() {
           </form>
         </section>
       </main>
-
-      <InfoTooltip isSuccessOpened={isSuccess} isFailOpened={isFail} onClose={closePopup} />
     </>
   )
 }

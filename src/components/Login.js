@@ -1,20 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router';
-import InfoTooltip from './InfoTooltip';
-import * as auth from '../utils/auth';
-import logo from '../images/header__logo.svg'
-function Login({handleLogin}) {
 
-  const history = useHistory();
+function Login({handleLogin}) {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [isFail, setIsFail] = React.useState(false);
 
-  const closePopup = () => {
-    setIsFail(false)
-  }
 
   const handleEmailChange = (evt) => {
     setEmail(evt.target.value)
@@ -26,30 +16,12 @@ function Login({handleLogin}) {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-
-    auth.authorize(password, email)
-      .then((data) => {
-        if(data.token) {
-          handleLogin();
-          history.push({
-            pathname: '/'
-          })
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        setIsFail(true)
-      })
+    handleLogin(password, email);
   }
 
 
   return (
     <>
-      <header className="page__header header">
-        <img className="header__logo" src={logo} alt="логотип место" />
-        <Link to="signup" className="header__link">Регистрация</Link>
-      </header>
-
       <main className="page__content content">
         <section className="page__register register">
           <form className="form form_type_register" name={`login-form`} noValidate={false} onSubmit={handleSubmit}>
@@ -62,8 +34,6 @@ function Login({handleLogin}) {
           </form>
         </section>
       </main>
-
-      <InfoTooltip isFailOpened={isFail} onClose={closePopup} />
     </>
   );
 }
