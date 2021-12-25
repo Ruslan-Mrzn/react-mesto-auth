@@ -58,7 +58,7 @@ function App() {
   }
 
   const handleCardLike = (card) => {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i === currentUser._id);
 
     api.changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {
@@ -87,7 +87,7 @@ function App() {
         setCurrentUser(newUserData);
         closeAllPopups();
       })
-      .catch(err => console.log(`Ошибка при обновлении данных профиля: ${err}`))
+      .catch(err => console.error(`Ошибка при обновлении данных профиля: ${err}`))
       .finally(() => {
         setIsLoadingApiRequest(false);
       })
@@ -136,12 +136,10 @@ function App() {
   const handleLogin = (password, email) => {
     auth.authorize(password, email)
       .then((data) => {
-        if(data.token) {
-          setLoggedIn(true);
-          history.push({
-            pathname: '/'
-          })
-        }
+        setLoggedIn(true);
+        history.push({
+          pathname: '/'
+        })
       })
       .catch((err) => {
         console.error(err);
@@ -161,11 +159,14 @@ function App() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('jwt');
-    setLoggedIn(false);
-    history.push({
-      pathname: '/signin'
-    })
+    auth.logout()
+      .then(() => {
+        setLoggedIn(false);
+        history.push({
+          pathname: '/signin'
+        })
+      })
+      .catch((err) => console.error(err));
   }
 
   const closeAllPopups = () => {
@@ -176,38 +177,33 @@ function App() {
     setSelectedCard({});
   }
 
-
-
+  const checkToken = React.useCallback(() => {
+    auth.getContent()
+      .then((data) => {
+        if (data) {
+          setUserData({...data})
+          setLoggedIn(true)
+          history.push({
+            pathname: '/'
+          })
+        }
+      })
+      .catch((err) => console.error(err))
+  }, [history]);
 
   React.useEffect(() => {
-    const tokenCheck = () => {
-      if (localStorage.getItem('jwt')) {
-        const jwt = localStorage.getItem('jwt');
-        auth.getContent(jwt)
-          .then((data) => {
-            if (data) {
-              setUserData({...data.data})
-              setLoggedIn(true)
-              history.push({
-                pathname: '/'
-              })
-            }
-          })
-          .catch((err) => console.error(err))
-      }
-    };
-    tokenCheck();
-  }, [loggedIn, history]);
+    checkToken();
+  }, [checkToken, loggedIn])
 
 
   React.useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
     .then(([user, initialCards]) => {
-      setCurrentUser(user);
+      setCurrentUser(Object.assign(currentUser, user));
       setCards(initialCards);
     })
     .catch((err) => console.error(err));
-  }, [])
+  }, [loggedIn, currentUser])
 
   return (
     <>

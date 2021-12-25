@@ -15,6 +15,8 @@ class Api {
   // получение данных пользователя с сервера
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
+      method: 'GET',
+      credentials: 'include', // теперь куки посылаются вместе с запросом
       headers: this._headers
     })
     .then(this._checkResponse)
@@ -23,7 +25,9 @@ class Api {
   // получение массива начальных карточек с сервера
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
-      headers: this._headers
+      method: 'GET',
+      headers: this._headers,
+      credentials: 'include', // теперь куки посылаются вместе с запросом
     })
     .then(this._checkResponse)
   }
@@ -32,6 +36,7 @@ class Api {
   saveProfileData(profileData) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
+      credentials: 'include', // теперь куки посылаются вместе с запросом
       headers: this._headers,
       body: JSON.stringify({
         name: `${profileData.name}`,
@@ -45,6 +50,7 @@ class Api {
   addNewCard(cardData) {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
+      credentials: 'include', // теперь куки посылаются вместе с запросом
       headers: this._headers,
       body: JSON.stringify({
         name: `${cardData.name}`,
@@ -58,6 +64,7 @@ class Api {
   deleteCard(cardID) {
     return fetch(`${this._baseUrl}/cards/${cardID}`, {
       method: 'DELETE',
+      credentials: 'include', // теперь куки посылаются вместе с запросом
       headers: this._headers,
     })
       .then(this._checkResponse)
@@ -66,14 +73,16 @@ class Api {
   // переключение лайка
   changeLikeCardStatus(cardID, isLiked) {
     if(!isLiked) {
-      return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
+      return fetch(`${this._baseUrl}/cards/${cardID}/likes`, {
         method: 'PUT',
+        credentials: 'include', // теперь куки посылаются вместе с запросом
         headers: this._headers,
       })
         .then(this._checkResponse)
     } else {
-      return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
+      return fetch(`${this._baseUrl}/cards/${cardID}/likes`, {
         method: 'DELETE',
+        credentials: 'include', // теперь куки посылаются вместе с запросом
         headers: this._headers,
       })
         .then(this._checkResponse)
@@ -84,6 +93,7 @@ class Api {
   changeAvatar(avatarUrl) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
+      credentials: 'include', // теперь куки посылаются вместе с запросом
       headers: this._headers,
       body: JSON.stringify({
         avatar: `${avatarUrl}`,
@@ -95,9 +105,9 @@ class Api {
 
 // экспортируем только экземпляр класса (по условию задачи)
 const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-24',
+  baseUrl: 'http://localhost:3000', // 'https://api.murzinruslan.students.nomoredomains.monster'
+  credentials: 'include', // теперь куки посылаются вместе с запросом
   headers: {
-    authorization: 'e8edd25c-68cd-4899-918e-51e937828043',
     'Content-Type': 'application/json'
   }
 });

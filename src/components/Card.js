@@ -13,13 +13,12 @@ function Card({card, onCardClick, onCardLike, onCardDelete}) {
   const handleCardDelete = () => {
     onCardDelete(card);
   }
-
   const currentUser = React.useContext(CurrentUserContext);
-  const isOwn = card.owner._id === currentUser._id;
+  const isOwn = card.owner === currentUser._id;
   const cardDeleteButtonClassName = (
     `photo-gallery__delete-item-button ${isOwn ? 'photo-gallery__delete-item-button_available' : ''}`
   );
-  const isLiked = card.likes.some(i => i._id === currentUser._id);
+  const isLiked = card.likes.some(i => i === currentUser._id);
   const cardLikeButtonClassName = (
     `photo-card__like-button ${isLiked ? 'photo-card__like-button_type_active' : ''}`
   );
