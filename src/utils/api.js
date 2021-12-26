@@ -105,7 +105,7 @@ class Api {
 
 // экспортируем только экземпляр класса (по условию задачи)
 const api = new Api({
-  baseUrl: 'http://localhost:3000', // 'https://api.murzinruslan.students.nomoredomains.monster'
+  baseUrl: 'https://api.murzinruslan.students.nomoredomains.monster', // 'http://localhost:3000'
   credentials: 'include', // теперь куки посылаются вместе с запросом
   headers: {
     'Content-Type': 'application/json'

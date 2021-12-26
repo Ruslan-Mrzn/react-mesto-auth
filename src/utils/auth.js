@@ -1,4 +1,4 @@
-export const BASE_URL ='http://localhost:3000'; // 'https://api.murzinruslan.students.nomoredomains.monster'
+export const BASE_URL = 'https://api.murzinruslan.students.nomoredomains.monster'; // 'http://localhost:3000'
 
 // метод для проверки ответа (чтобы не дублировать код во всех запросах)
 const _checkResponse = (res) => {
